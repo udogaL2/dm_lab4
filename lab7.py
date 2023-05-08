@@ -104,37 +104,59 @@ def main():
         secect = int(input('Ошибка, введите вершину, из которой будут найдены кратчайшие пути: '))
 
     with open('output.txt', 'w', encoding='utf-8') as f:
-        string_to_write1 = ''
-        for i in range(n):
-            string_to_write1 += f"Вершина {i} -> "
+        f.close()
+
+    for i in range(n):
+        with open('output.txt', 'a', encoding='utf-8') as f:
+            string_to_write1 = f"Вершина {i} -> "
             for j in graph[i]:
                 string_to_write1 += f"{j} ({graph[i][j]}), "
             string_to_write1 += '\n'
-        string_to_write1 += '\n'
+            f.write(string_to_write1)
+            f.close()
+
+    with open('output.txt', 'a', encoding='utf-8') as f:
+        string_to_write1 = '\n'
         string_to_write1 += f'Количество ребер: {str(sum([len(graph[i]) for i in graph]))}\n'
 
         string_to_write1 += 'Алгоритм Дейкстры:\n'
         f.write(string_to_write1)
-
-        a_d, itr = dijkstra(graph, secect)
-
         string_to_write2 = 'Кратчайшие расстояния:\n'
-        for i in range(n):
-            string_to_write2 += f"{secect} => {i} ({a_d[i]})\n"
-        string_to_write2 += f'Количество итераций: {itr}\n'
-        print('Алгоритм Дейкстры пройден')
-
-        a_d, itr = bellman_ford(graph, secect)
         f.write(string_to_write2)
 
-        string_to_write3 = 'Алгоритм Беллмана Форда \nКратчайшие расстояния:\n'
-        for i in range(n):
-            string_to_write3 += f"{secect} => {i} ({a_d[i]})\n"
-        string_to_write3 += f'Количество итераций: {itr}\n'
-        print('Алгоритм Беллмана Форда пройден')
+        f.close()
 
+    a_d, itr = dijkstra(graph, secect)
+
+    for i in range(n):
+        with open('output.txt', 'a', encoding='utf-8') as f:
+            string_to_write2 = f"{secect} => {i} ({a_d[i]})\n"
+            f.write(string_to_write2)
+            f.close()
+
+    with open('output.txt', 'a', encoding='utf-8') as f:
+        string_to_write2 = f'Количество итераций: {itr}\n'
+        f.write(string_to_write2)
+        f.close()
+
+    print('Алгоритм Дейкстры пройден')
+
+    a_d, itr = bellman_ford(graph, secect)
+    with open('output.txt', 'a', encoding='utf-8') as f:
+        string_to_write3 = 'Алгоритм Беллмана Форда \nКратчайшие расстояния:\n'
         f.write(string_to_write3)
         f.close()
+
+    for i in range(n):
+        with open('output.txt', 'a', encoding='utf-8') as f:
+            string_to_write3 = f"{secect} => {i} ({a_d[i]})\n"
+            f.write(string_to_write3)
+            f.close()
+    with open('output.txt', 'a', encoding='utf-8') as f:
+        string_to_write3 = f'Количество итераций: {itr}\n'
+        f.write(string_to_write3)
+        f.close()
+    print('Алгоритм Беллмана Форда пройден')
 
 
 if __name__ == '__main__':
