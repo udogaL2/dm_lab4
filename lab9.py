@@ -179,7 +179,10 @@ def find_maximum_matching(edges):
             if dfs(vertex, visited, match):
                 maximum_matching += 1
 
-    matching_edges = [(u, v) for u, v in match.items() if v is not None]
+    matching_edges = []
+    for u, v in match.items():
+        if v is not None and (v, u) not in matching_edges:
+            matching_edges.append((u, v))
 
     return maximum_matching, matching_edges
 
@@ -212,5 +215,3 @@ if __name__ == '__main__':
             print("Для получения двудольного графа нужно удалить", edge_remove, 'ребро')
         else:
             print('Не удалось найти ребро, удалив которое, получится двудольный граф')
-
-
