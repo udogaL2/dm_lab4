@@ -65,6 +65,47 @@ def is_bipartite(graph):
     return True
 
 
+def create_visuilation(edges):
+    # Создаем словарь для хранения групп ребер
+    edge_groups = defaultdict(int)
+
+    def dfs(node, group):
+        # Помещаем узел в группу
+        edge_groups[node] = group
+
+        # Перебираем соседние узлы
+        for neighbor in graph[node]:
+            if neighbor not in edge_groups:
+                # Рекурсивно вызываем dfs для соседнего узла с противоположной группой
+                if not dfs(neighbor, 1 - group):
+                    return False
+            elif edge_groups[neighbor] == group:
+                # Если соседний узел уже принадлежит текущей группе, то граф не является двудольным
+                return False
+
+        return True
+
+    # Создаем граф из набора ребер
+    graph = defaultdict(list)
+    for edge in edges:
+        x, y = edge
+        graph[x].append(y)
+        graph[y].append(x)
+
+    # Перебираем все узлы графа
+    for node in graph:
+        if node not in edge_groups:
+            # Если узел еще не принадлежит какой-либо группе, запускаем dfs для него
+            if not dfs(node, 0):
+                return None  # Граф не является двудольным
+
+    # Группируем ребра по их принадлежности к группам
+    group_1 = [node for node, group in edge_groups.items() if group == 0]
+    group_2 = [node for node, group in edge_groups.items() if group == 1]
+
+    return group_1, group_2
+
+
 def remove_edges_to_make_bipartite(edges, n):
     graph = Graph(edges, n)
     if is_bipartite(graph):
@@ -190,7 +231,7 @@ def find_maximum_matching(edges):
 if __name__ == '__main__':
 
     # Список ребер Graph.
-    # edges = [(1, 0), (1, 2), (1, 7), (2, 3), (3, 5), (4, 6), (4, 8), (7, 8), (1, 3)]
+    # edges = [(1, 0), (1, 2), (1, 7), (2, 3), (3, 5), (4, 6), (4, 8), (7, 8)]
     edges = [(11, 14), (8, 3), (11, 3), (14, 15), (10, 1), (3, 10), (15, 1), (6, 10), (13, 4), (15, 9), (7, 10), (9, 8),
              (2, 5), (12, 11), (12, 10), (2, 8),
              (8, 7), (1, 5), (4, 1), (4, 7), (2, 11), (2, 4), (11, 9), (15, 13), (10, 13), (3, 4), (12, 8), (5, 14),
@@ -203,6 +244,13 @@ if __name__ == '__main__':
 
     if not (edge_remove := remove_edges_to_make_bipartite(edges, n)):
         print('Граф является двудольным')
+
+        groups = create_visuilation(edges)
+        if groups is None:
+            print("Граф не является двудольным.")
+        else:
+            print("Группа 1:", sorted(groups[0]))
+            print("Группа 2:", sorted(groups[1]))
 
         maximum_matching, matching_edges = find_maximum_matching(edges)
 
