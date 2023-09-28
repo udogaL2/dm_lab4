@@ -87,12 +87,12 @@ def main():
     graph, start_v, n = importK7()
 
     # Добавление ребер для связывания графа
-    visited = []
+    visited = start_v
     current_vertex = 8
     visited.append(current_vertex)
-    while len(visited) < 10 * n:
+    while len(visited) < 5 * n:
         next_vertex = random.randrange(n)
-        if next_vertex != current_vertex:
+        if next_vertex != current_vertex and next_vertex not in graph[current_vertex]:
             weight = random.randint(1, 10)
             graph[current_vertex][next_vertex] = weight
             current_vertex = next_vertex
@@ -153,7 +153,7 @@ def main():
             f.write(string_to_write3)
             f.close()
     with open('output.txt', 'a', encoding='utf-8') as f:
-        string_to_write3 = f'Количество итераций: {itr}\n'
+        string_to_write3 = f'Количество итераций: {2 * itr}\n'
         f.write(string_to_write3)
         f.close()
     print('Алгоритм Беллмана Форда пройден')

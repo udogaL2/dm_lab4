@@ -114,7 +114,7 @@ def main():
     print(*incidence_no_matrix, sep='\n')
 
     for i in range(len(no_graf)):
-        print('Кратчайшие пути от каждой вершины №', i)
+        print('Кратчайшие пути от вершины №', i)
         print(dijkstra(no_graf, i))
 
 

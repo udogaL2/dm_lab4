@@ -1,3 +1,4 @@
+import copy
 import random
 from pprint import pprint
 from queue import Queue
@@ -65,8 +66,15 @@ graph = {
 source = 'S'
 sink = 'T'
 
-max_flow = ford_fulkerson(graph, source, sink)
-print(f"Максимальный поток для начальных условий: {max_flow}")
+for i in graph:
+    print(f'Максимальный поток из вершины {i} в {sink}', end=': ')
+    if i != sink:
+        graph_copy = copy.deepcopy(graph)
+        max_flow = ford_fulkerson(graph_copy, i, sink)
+        print(max_flow)
+    else:
+        print('Не существует')
+
 
 
 graph = {
@@ -80,10 +88,14 @@ graph = {
     'T': {}
 }
 
-source = 'S'
-sink = 'T'
-
 print('Граф со случайными значениями:')
 pprint(graph)
-max_flow = ford_fulkerson(graph, source, sink)
-print(f"Максимальный поток для слуйчайных условий: {max_flow}")
+for i in graph:
+    print(f'Максимальный поток из вершины {i} в {sink}', end=': ')
+    if i != sink:
+        graph_copy = copy.deepcopy(graph)
+        max_flow = ford_fulkerson(graph_copy, i, sink)
+        print(max_flow)
+    else:
+        print('Не существует')
+
